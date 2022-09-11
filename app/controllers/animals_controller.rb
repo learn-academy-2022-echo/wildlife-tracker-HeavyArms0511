@@ -1,4 +1,15 @@
 class AnimalsController < ApplicationController
+    
+    
+    def render_unprocessable_entity_response(exception)
+        render json: exception.record.errors, status: :unprocessable_entity
+      end
+
+      def render_not_found_response(exception)
+        render json: { error: exception.message }, status: :not_found
+      end
+
+
     def index
         animals = Animal.all
         render json: animals
@@ -17,7 +28,7 @@ class AnimalsController < ApplicationController
     end
     def update
         animal = Animal.find(params[:id])
-        animal.update(animal_params)
+        animal.update!(animal_params)
         if animal.valid?
             render json: animal
         else 
